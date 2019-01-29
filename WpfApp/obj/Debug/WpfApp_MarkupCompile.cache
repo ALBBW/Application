@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Marcel Schein\Documents\GitHub\WPFApp-Modul\WpfApp\obj\Debug\
+C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\
 WpfApp
 none
 false
 DEBUG;TRACE
-C:\Users\Marcel Schein\Documents\GitHub\WPFApp-Modul\WpfApp\App.xaml
+C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\App.xaml
 4-1552541847
 
-221610278358
-15-1438223798
+26305207295
+15-1561844815
 Views\Account Login.xaml;Views\InfoView.xaml;Views\MainWindow.xaml;Views\MeetingPanel.xaml;
 
-False
+True
 
