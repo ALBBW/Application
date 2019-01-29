@@ -1,0 +1,33 @@
+[
+  {
+    "sender": "192.68.0.50",
+    "port": 8080,
+    "reason": "ReceiveData"
+  },
+  {
+    "date": "2000-10-25T00:00:00",
+    "lateness": 0,
+    "initial": "A",
+    "meeting": [
+      {
+        "time": "2018-12-05T12:55:00",
+        "sender": "peter.albbw@gmail.com",
+        "subject": "Test Termin1",
+        "info": "Dies ist ein Termin zum Testen"
+      }
+    ]
+  },
+  {
+    "date": "2000-10-26T00:00:00",
+    "lateness": 0,
+    "initial": "A",
+    "meeting": [
+      {
+        "time": "2018-12-06T14:00:00",
+        "sender": "gustav.albbw@gmail.com",
+        "subject": "Test Termin2",
+        "info": "Dies ist ein Termin zum Testen"
+      }
+    ]
+  }
+]

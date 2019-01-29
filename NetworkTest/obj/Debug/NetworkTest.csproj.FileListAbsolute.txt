@@ -1,0 +1,10 @@
+C:\Users\Marcel Schein\source\repos\WpfApp\NetworkTest\bin\Debug\NetworkTest.exe.config
+C:\Users\Marcel Schein\source\repos\WpfApp\NetworkTest\bin\Debug\NetworkTest.exe
+C:\Users\Marcel Schein\source\repos\WpfApp\NetworkTest\bin\Debug\NetworkTest.pdb
+C:\Users\Marcel Schein\source\repos\WpfApp\NetworkTest\obj\Debug\NetworkTest.csprojAssemblyReference.cache
+C:\Users\Marcel Schein\source\repos\WpfApp\NetworkTest\obj\Debug\NetworkTest.Form1.resources
+C:\Users\Marcel Schein\source\repos\WpfApp\NetworkTest\obj\Debug\NetworkTest.Properties.Resources.resources
+C:\Users\Marcel Schein\source\repos\WpfApp\NetworkTest\obj\Debug\NetworkTest.csproj.GenerateResource.cache
+C:\Users\Marcel Schein\source\repos\WpfApp\NetworkTest\obj\Debug\NetworkTest.csproj.CoreCompileInputs.cache
+C:\Users\Marcel Schein\source\repos\WpfApp\NetworkTest\obj\Debug\NetworkTest.exe
+C:\Users\Marcel Schein\source\repos\WpfApp\NetworkTest\obj\Debug\NetworkTest.pdb
