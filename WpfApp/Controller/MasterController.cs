@@ -957,7 +957,7 @@ namespace WpfApp.Controller
             }
         }
 
-        void AddInfosIntoTheCalendar(string[] dayslist, ArrayList listOfDays)
+        public void AddInfosIntoTheCalendar(string[] dayslist, ArrayList listOfDays)
         {
             if (listOfDays != null)
             {
@@ -1058,6 +1058,11 @@ namespace WpfApp.Controller
         public ArrayList GetAllDays()
         {
             return mdl.GetAllDays();
+        }
+
+        public void SetReadDataJSON(string jsonstring)
+        {
+            mdl.SetReadDataJSON(jsonstring);
         }
     }
 }

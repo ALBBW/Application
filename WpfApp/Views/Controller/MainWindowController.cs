@@ -71,6 +71,13 @@ namespace WpfApp.Views.Controller
             string[] dayslist = null;
             mctrl.DetermineDaysInMonth(ref dayslist);
             mctrl.PrepareDataJSONForTransmission(dayslist);
+
+            if ((string)mctrl.GetReadDataJSONObject() != string.Empty)
+            {
+                mctrl.AddInfosIntoTheCalendar(dayslist, mctrl.parseDataJSONString((string)mctrl.GetReadDataJSONObject()));
+                mctrl.SetReadDataJSON("");
+            }
+
             mctrl.GetThreadEndingFlag()[1] = true;
             mctrl.GetThreadEndingFlag()[1] = false;
             //Console.WriteLine("Timer Event " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second);
