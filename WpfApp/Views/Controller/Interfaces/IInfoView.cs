@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WpfApp.Views.Controller.Interfaces
+﻿namespace WpfApp.Views.Controller.Interfaces
 {
-    interface IInfoView : IController
-    {
-        void ShowView();
-    }
+	interface IInfoView : IController
+	{
+		void ShowView();
+	}
 }

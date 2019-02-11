@@ -1,0 +1,58 @@
+﻿<Window x:Class="WpfApp.Views.EatingPlan"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:WpfApp.Model"
+        mc:Ignorable="d"
+        Title="EatingPlan" Height="450" Width="600" Background="Transparent" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True">
+	<Grid>
+		<Rectangle Width="600" Height="450" Fill="#E0FFFFFF" RadiusX="20" RadiusY="20"></Rectangle>
+		<DataGrid
+			Margin="10, 10, 10, 78"
+			Name="DGrid"
+			FontSize="18"
+			CanUserReorderColumns="False"
+			CanUserResizeColumns="False"
+			CanUserResizeRows="False"
+			CanUserSortColumns="False"
+			SelectionMode="Single"
+			SelectionUnit="FullRow"
+			CanUserAddRows="False"
+			CanUserDeleteRows="False"
+			IsReadOnly="True"
+			RowHeaderWidth="0"
+			AutoGenerateColumns="False"
+		>
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Datum" Width="120" Binding="{Binding EatingItemDate}">
+					<DataGridTextColumn.ElementStyle>
+						<Style TargetType="{x:Type TextBlock}">
+							<Setter Property="TextBlock.TextAlignment" Value="Center" />
+							<Setter Property="Padding" Value="0,18,0,0" />
+							<Setter Property="TextBlock.Height" Value="62.6" />
+						</Style>
+					</DataGridTextColumn.ElementStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="Gerichte" Width="*" Binding="{Binding EatingItemDescription}">
+					<DataGridTextColumn.ElementStyle>
+						<Style TargetType="{x:Type TextBlock}">
+							<Setter Property="TextWrapping" Value="Wrap" />
+							<Setter Property="Padding" Value="5,5,5,0" />
+							<Setter Property="TextBlock.Height" Value="62.6" />
+						</Style>
+					</DataGridTextColumn.ElementStyle>
+				</DataGridTextColumn>
+			</DataGrid.Columns>
+		</DataGrid>
+		<Grid Margin="10" VerticalAlignment="Bottom" Height="40">
+			<Border Name="mask" Background="White" CornerRadius="15" BorderThickness="1" />
+			<StackPanel>
+				<StackPanel.OpacityMask>
+					<VisualBrush Visual="{Binding ElementName=mask}" />
+				</StackPanel.OpacityMask>
+				<Button Name="Btn_Close" Background="#80C080" Content="Schließen" FontSize="18" Height="40" BorderBrush="Transparent" />
+			</StackPanel>
+		</Grid>
+	</Grid>
+</Window>

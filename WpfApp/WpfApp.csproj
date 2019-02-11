@@ -72,12 +72,12 @@
   <PropertyGroup>
     <StartupObject>WpfApp.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="SHA3">
-      <HintPath>..\..\..\..\Documents\SHA-3 0.9.2\SHA3.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -103,6 +103,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\EatingPlan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\InfoView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -120,11 +124,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controller\ExternFunctions.cs" />
+    <Compile Include="Views\Controller\EatingPlanController.cs" />
+    <Compile Include="Views\Controller\Interfaces\IEatingPlan.cs" />
+    <Compile Include="Views\Controller\ViewsConstructor.cs" />
     <Compile Include="Views\Controller\Interfaces\IAccountView.cs" />
     <Compile Include="Views\Controller\Interfaces\IController.cs" />
     <Compile Include="Views\Controller\Interfaces\IInfoView.cs" />
     <Compile Include="Views\Controller\Interfaces\IMainView.cs" />
     <Compile Include="Views\Controller\Interfaces\IMeetingPanelView.cs" />
+    <Compile Include="Views\EatingPlan.xaml.cs">
+      <DependentUpon>EatingPlan.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\InfoView.xaml.cs">
       <DependentUpon>InfoView.xaml</DependentUpon>
     </Compile>
@@ -147,7 +157,7 @@
       <DependentUpon>MeetingPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controller\MeetingPanelController.cs" />
-    <Compile Include="Model\Model.cs" />
+    <Compile Include="Model\MainModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -185,6 +195,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IMG\Warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

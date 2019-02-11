@@ -1,163 +1,197 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using WpfApp.Controller;
+using WpfApp.Model;
 using WpfApp.Views.Controller.Interfaces;
-using System.Timers;
 
 namespace WpfApp.Views.Controller
 {
-    public sealed class MainWindowController : IMainView, IView
-    {
-        MasterController mctrl;
-        MainWindow mw;
-        Timer time1;
-        IController ic;
-        public TextBlock hoveredcell { get; set; }
-        
-        public MainWindowController(MainWindow mw)
-        {
-            this.mw = mw;
-            ic = this;
-            ic.InstantiateMasterController();
-            ic.Start();
-        }
+	public sealed class MainWindowController : IMainView, IView
+	{
+		MasterController mctrl;
+		MainWindow mw;
+		Timer time1;
+		IController ic;
+		public TextBlock hoveredcell { get; private set; }
 
-        void IController.InstantiateMasterController()
-        {
-            if (MasterController.Instance != null)
-            {
-                mctrl = MasterController.Instance;
-            }
+		public MainWindowController(MainWindow mw)
+		{
+			this.mw = mw;
+			ic = this;
+			ic.InstantiateMasterController();
+			ic.Start();
+		}
 
-            mctrl.AddController(this);
-        }
+		void IController.InstantiateMasterController()
+		{
+			if (MasterController.Instance != null)
+			{
+				mctrl = MasterController.Instance;
+			}
 
-        void IController.Start()
-        {
-            mw.Closing += OnMainWindowClosing;
-            mw.DGrid.ItemsSource = mctrl.GetList();
-            mw.DGrid.SizeChanged += new SizeChangedEventHandler(DGrid_SizeChanged);
-            mw.lblMonth.Content = DateTime.Now.Date.ToString("MMMM", CultureInfo.CreateSpecificCulture("de-DE"));
-            mw.DGrid.ItemContainerGenerator.StatusChanged += CustomizeCells;
-            mw.DGrid.FontWeight = FontWeights.Bold;
-            time1 = new Timer(60000);
-            time1.Elapsed += Time1_Elapsed;
-            time1.Start();
-        }
+			mctrl.AddController(this);
+		}
 
-        void OnMainWindowClosing(object sender, EventArgs e)
-        {
-            mctrl.GetThreadEndingFlag()[1] = true;
+		void IController.Start()
+		{
+			mw.Closing += OnMainWindowClosing;
+			mw.DGrid.ItemsSource = mctrl.GetList();
+			mw.DGrid.SizeChanged += new SizeChangedEventHandler(DGrid_SizeChanged);
+			mw.lblMonth.Content = DateTime.Now.Date.ToString("MMMM", CultureInfo.CreateSpecificCulture("de-DE"));
+			mw.DGrid.ItemContainerGenerator.StatusChanged += CustomizeCells;
+			mw.DGrid.FontWeight = FontWeights.Bold;
+			mw.Btn_EatingPlan.Click += Btn_EatingPlan_Click;
+			time1 = new Timer(60000);
+			time1.Elapsed += Time1_Elapsed;
+			time1.Start();
+		}
 
-            if (!(mctrl.writethreads[1].IsAlive & mctrl.readthreads[1].IsAlive))
-            {
-                Application.Current.Shutdown();
-            }
-        }
+		void OnMainWindowClosing(object sender, EventArgs e)
+		{
+			mctrl.GetThreadEndingFlag()[0] = true;
+			mctrl.GetThreadEndingFlag()[1] = true;
+			mctrl.GetThreadEndingFlag()[2] = true;
 
-        private void Time1_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            string[] dayslist = null;
-            mctrl.DetermineDaysInMonth(ref dayslist);
-            mctrl.PrepareDataJSONForTransmission(dayslist);
+			while (true)
+			{
+				if (
+				!(
+					mctrl.writethreads[0].IsAlive &
+					mctrl.readthreads[0].IsAlive &
+					mctrl.writethreads[1].IsAlive &
+					mctrl.readthreads[1].IsAlive &
+					mctrl.writethreads[2].IsAlive &
+					mctrl.readthreads[2].IsAlive
+				))
+				{
+					Application.Current.Shutdown();
+					return;
+				}
+			}
+		}
 
-            if ((string)mctrl.GetReadDataJSONObject() != string.Empty)
-            {
-                mctrl.AddInfosIntoTheCalendar(dayslist, mctrl.parseDataJSONString((string)mctrl.GetReadDataJSONObject()));
-                mctrl.SetReadDataJSON("");
-            }
+		void Time1_Elapsed(object sender, ElapsedEventArgs e)
+		{
+			string[] dayslist = null;
+			mctrl.DetermineDaysInMonth(ref dayslist);
+			mctrl.PrepareDataJSONForTransmission(dayslist);
 
-            mctrl.GetThreadEndingFlag()[1] = true;
-            mctrl.GetThreadEndingFlag()[1] = false;
-            //Console.WriteLine("Timer Event " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second);
-            mctrl.StartThread(1, mctrl.GetWriteDataJSONObject(), mctrl.GetReadDataJSONObject());
-            time1.Start();
-        }
+			if ((string)mctrl.GetReadDataJSONObject() != string.Empty)
+			{
+				mctrl.AddInfosIntoTheCalendar(dayslist, mctrl.parseDataJSONString((string)mctrl.GetReadDataJSONObject()));
+				mctrl.SetReadDataJSON("");
+			}
 
-        void IMainView.ShowView()
-        {
-            mw.Show();
-        }
+			if ((string)mctrl.GetReadEatingPlanJSONObject() != string.Empty)
+			{
+				//string testjson = "{{\"sender\":\"10.122.122.110\",\"port\":9010,\"reason\":\"ReceiveEatingPlanData\"},{\"EatingItemDate\":\"2019 - 02 - 04T00: 00:00\",\"EatingItemDescription\":\"Essen1\"},{\"EatingItemDate\":\"2019 - 02 - 05T00: 00:00\",\"EatingItemDescription\":\"Essen2\"},{\"EatingItemDate\":\"2019 - 02 - 06T00: 00:00\",\"EatingItemDescription\":\"Essen3\"},{\"EatingItemDate\":\"2019 - 02 - 07T00: 00:00\",\"EatingItemDescription\":\"Essen4\"},{\"EatingItemDate\":\"2019 - 02 - 08T00: 00:00\",\"EatingItemDescription\":\"Essen5\"}}";
+				//mctrl.eatingItemList = new MainModel.EatingItemList(new System.Collections.ObjectModel.ObservableCollection<MainModel.EatingItem>(mctrl.parseEatingPlanJSONString(testjson)));
+				mctrl.eatingItemList = new MainModel.EatingItemList
+				(
+					new System.Collections.ObjectModel.ObservableCollection<MainModel.EatingItem>
+					(
+						mctrl.parseEatingPlanJSONString(mctrl.GetReadEatingPlanJSON())
+					)
+				);
+				ViewsConstructor.SetEatingPlanItemsSource(mctrl.ctrlList);
+				mctrl.SetReadEatingPlanJSON("");
+			}
 
-        void IController.HideView()
-        {
-            mw.Hide();
-        }
+			mctrl.GetThreadEndingFlag()[1] = true;
+			mctrl.GetThreadEndingFlag()[2] = true;
+			mctrl.GetThreadEndingFlag()[1] = false;
+			mctrl.GetThreadEndingFlag()[2] = false;
+			//Console.WriteLine("Timer Event " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second);
+			mctrl.StartThread(1, mctrl.GetWriteDataJSONObject(), mctrl.GetReadDataJSONObject());
+			mctrl.PrepareEatingPlanJSONForTransmission();
+			mctrl.StartThread(2, mctrl.GetWriteEatingPlanJSONObject(), mctrl.GetReadEatingPlanJSONObject());
+			time1.Interval = 60000;
+			time1.Start();
+		}
 
-        /*public void SetWindowModal(Account_Login al)
+		void IMainView.ShowView()
+		{
+			mw.Show();
+		}
+
+		void IController.HideView()
+		{
+			mw.Hide();
+		}
+
+		/*public void SetWindowModal(Account_Login al)
         {
             mw.Owner = al;
         }*/
 
-        #region Events
-        public void DGrid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (e.WidthChanged)
-            {
-                ((DataGrid)sender).RowHeight = ((DataGrid)sender).Columns.ElementAt(0).Width.DesiredValue;
-            }
-        }
+		#region Events
+		public void DGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			if (e.WidthChanged)
+			{
+				((DataGrid)sender).RowHeight = ((DataGrid)sender).Columns.ElementAt(0).Width.DesiredValue;
+			}
+		}
 
-        void OnCellMouseEnter(object sender, MouseEventArgs e)
-        {
-            hoveredcell = (TextBlock)sender;
-            mctrl.ShowMeetingPanel();
-        }
+		void OnCellMouseEnter(object sender, MouseEventArgs e)
+		{
+			hoveredcell = (TextBlock)sender;
+			ViewsConstructor.ShowMeetingPanel(mctrl.ctrlList);
+		}
 
-        void OnCellMouseLeave(object sender, MouseEventArgs e)
-        {
-            mctrl.HideMeetingPanel();
-        }
+		void OnCellMouseLeave(object sender, MouseEventArgs e)
+		{
+			ViewsConstructor.HideMeetingPanel(mctrl.ctrlList);
+		}
 
-        void CustomizeCells(object sender, EventArgs e)
-        {
-            DataGridRow row;
+		void CustomizeCells(object sender, EventArgs e)
+		{
+			DataGridRow row;
 
-            for (int i = 0; i < mw.DGrid.Items.Count; i++)
-            {
-                row = (DataGridRow)mw.DGrid.ItemContainerGenerator.ContainerFromIndex(i);
+			for (int i = 0; i < mw.DGrid.Items.Count; i++)
+			{
+				row = (DataGridRow)mw.DGrid.ItemContainerGenerator.ContainerFromIndex(i);
 
-                switch (row)
-                {
-                    case null: break;
-                    default:
-                        for (int col = 0; col < 7; col++)
-                        {
-                            FrameworkElement cellcontent = mw.DGrid.Columns[col].GetCellContent(row);
-                            cellcontent.Margin = new Thickness(0, 0, 0, 0);
+				switch (row)
+				{
+					case null: break;
+					default:
+						for (int col = 0; col < 7; col++)
+						{
+							FrameworkElement cellcontent = mw.DGrid.Columns[col].GetCellContent(row);
+							cellcontent.Margin = new Thickness(0, 0, 0, 0);
 
-                            if (cellcontent != null && ((TextBlock)cellcontent).Text.Contains(mctrl.GetMeetingSign()))
-                            {
-                                ((TextBlock)cellcontent).Background = Brushes.Green;
-                                ((TextBlock)cellcontent).Foreground = Brushes.White;
-                                ((TextBlock)cellcontent).MouseEnter += OnCellMouseEnter;
-                                ((TextBlock)cellcontent).MouseLeave += OnCellMouseLeave;
-                            }
-                        }
+							if (cellcontent != null && ((TextBlock)cellcontent).Text.Contains(mctrl.GetMeetingSign()))
+							{
+								((TextBlock)cellcontent).Background = Brushes.Green;
+								((TextBlock)cellcontent).Foreground = Brushes.White;
+								((TextBlock)cellcontent).MouseEnter += OnCellMouseEnter;
+								((TextBlock)cellcontent).MouseLeave += OnCellMouseLeave;
+							}
+						}
 
-                        break;
-                }
-            }
+						break;
+				}
+			}
+		}
 
-        }
-        #endregion
+		void Btn_EatingPlan_Click(object sender, RoutedEventArgs e)
+		{
+			ViewsConstructor.ShowEatingPlan(mctrl.ctrlList);
+		}
+		#endregion
 
-        #region Eigenschaften
-        MainWindow IMainView.GetMainWindow()
-        {
-            return mw;
-        }
-        #endregion
-    }
+		#region Eigenschaften
+		MainWindow IMainView.GetMainWindow()
+		{
+			return mw;
+		}
+		#endregion
+	}
 }

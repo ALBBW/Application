@@ -1,112 +1,103 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Net.NetworkInformation;
-using WpfApp.Views.Controller.Interfaces;
+using System.Windows;
 using WpfApp.Controller;
+using WpfApp.Views.Controller.Interfaces;
 
 namespace WpfApp.Views.Controller
 {
-    public sealed class AccountLoginController : IAccountView
-    {
-        MasterController mctrl;
-        Account_Login al;
-        IAccountView ic;
-        
-        public AccountLoginController()
-        {
-            al = new Account_Login();
-            al.DataContext = this;
-            ic = this;
-            ic.InstantiateMasterController();
-            ic.Start();
-        }
+	public sealed class AccountLoginController : IAccountView, IView
+	{
+		MasterController mctrl;
+		Account_Login al;
+		IAccountView ic;
 
-        bool? IAccountView.ShowView()
-        {
-            return al.ShowDialog();
-        }
+		public AccountLoginController()
+		{
+			al = new Account_Login();
+			al.DataContext = this;
+			ic = this;
+			ic.InstantiateMasterController();
+			ic.Start();
+		}
 
-        void IController.HideView()
-        {
-            al.Hide();
-        }
+		bool? IAccountView.ShowView()
+		{
+			return al.ShowDialog();
+		}
 
-        void IAccountView.Reinitialize()
-        {
-            ic.HideView();
-            al = new Account_Login();
-            al.Btn_login.Click += Button_Click;
-        }
+		void IController.HideView()
+		{
+			al.Hide();
+		}
 
-        void IController.InstantiateMasterController()
-        {
-            if (MasterController.Instance != null)
-            {
-                mctrl = MasterController.Instance;
-            }
+		bool? IAccountView.Reinitialize(string message)
+		{
+			ic.HideView();
+			al = new Account_Login();
+			al.Btn_login.Click += Button_Click;
+			al.lbl_warning.Text = message;
+			return al.ShowDialog();
+		}
 
-            //mctrl.AddController(this);
-        }
+		void IController.InstantiateMasterController()
+		{
+			if (MasterController.Instance != null)
+			{
+				mctrl = MasterController.Instance;
+			}
+		}
 
-        void IController.Start()
-        {
-            al.Btn_login.Click += Button_Click;
-        }
+		void IController.Start()
+		{
+			al.Btn_login.Click += Button_Click;
+		}
 
-        void OnLoginWindowClosing(object sender, EventArgs e)
-        {
-            mctrl.GetThreadEndingFlag()[1] = true;
+		#region Events
+		public void Button_Click(object sender, RoutedEventArgs e)
+		{
+			Ping p = new Ping();
+			PingReply pr = mctrl.SendPing(p);
 
-            if
-            (
-                mctrl.writethreads != null & mctrl.readthreads != null &&
-                !(mctrl.writethreads[1].IsAlive & mctrl.readthreads[1].IsAlive)
-            )
-            {
-                Application.Current.Shutdown();
-            }
-        }
+			if (pr.Status != IPStatus.Success)
+			{
+				al.lbl_warning.Text = "Der Mediator wurde nicht erreicht!";
+				//return;
+			}
 
-        #region Events
-        public void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Ping p = new Ping();
-            PingReply pr = mctrl.SendPing(p);
+			if (al.txtb_loginalias.Text != "" && al.pwb_loginpassword.Password != "")
+			{
+				mctrl.SaveTemporaryUserAccount(al.txtb_loginalias.Text, al.pwb_loginpassword.Password);
+			}
 
-            if (pr.Status != IPStatus.Success)
-            {
-                al.lbl_warning.Text = "Der Mediator wurde nicht erreicht!";
-                //return;
-            }
+			ic.HideView();
+		}
 
-            if (al.txtb_loginalias.Text != "" && al.pwb_loginpassword.Password != "")
-            {
-                mctrl.SaveTemporaryUserAccount(al.txtb_loginalias.Text, al.pwb_loginpassword.Password);
-            }
+		void OnLoginWindowClosing(object sender, EventArgs e)
+		{
+			mctrl.GetThreadEndingFlag()[1] = true;
 
-            ic.HideView();
-        }
-        #endregion
+			if
+			(
+				mctrl.writethreads != null & mctrl.readthreads != null &&
+				!(mctrl.writethreads[1].IsAlive & mctrl.readthreads[1].IsAlive)
+			)
+			{
+				Application.Current.Shutdown();
+			}
+		}
+		#endregion
 
-        #region Eigenschaften
-        public string GetLoginname()
-        {
-            return al.txtb_loginalias.Text;
-        }
+		#region Eigenschaften
+		public string GetLoginname()
+		{
+			return al.txtb_loginalias.Text;
+		}
 
-        public string GetPassword()
-        {
-            return al.pwb_loginpassword.Password;
-        }
-
-        void IAccountView.SetWarningLabel(string text)
-        {
-            al.lbl_warning.Text = text;
-        }
-        #endregion
-    }
+		public string GetPassword()
+		{
+			return al.pwb_loginpassword.Password;
+		}
+		#endregion
+	}
 }

@@ -4,12 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="567" Width="568" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-	<Grid Name="ContentPane" HorizontalAlignment="Left" Width="552" Height="538" VerticalAlignment="Top" Margin="0,0,0,0">
-		<Canvas Margin="0,0,0,477" HorizontalAlignment="Center" Width="552" Height="41" VerticalAlignment="Top">
-			<Label Name="lblMonth" FontSize="20" FontWeight="Bold" Width="532" Canvas.Left="10" HorizontalContentAlignment="Center">Month</Label>
+        Title="MainWindow" Height="667" Width="668" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+	<Grid Name="ContentPane" HorizontalAlignment="Left" Width="652" Height="638" VerticalAlignment="Top" Margin="0,0,0,0">
+		<Canvas Margin="0,0,0,477" HorizontalAlignment="Center" Width="652" Height="41" VerticalAlignment="Top">
+			<Label Name="lblMonth" FontSize="20" FontWeight="Bold" Width="632" Canvas.Left="10" HorizontalContentAlignment="Center">Month</Label>
 		</Canvas>
-		<Viewbox Margin="10,50,10,60" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="432">
+		<Viewbox Margin="10,50,10,60" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="532">
 			<DataGrid
 				Name="DGrid"
 				AutoGenerateColumns="True"
@@ -28,7 +28,10 @@
 			</DataGrid>
 		</Viewbox>
 		<Grid Margin="0,0,0,10" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="40">
-			<Button HorizontalAlignment="Stretch">Essensplan öffnen</Button>
+			<Button Name="Btn_EatingPlan" HorizontalAlignment="Stretch">Essensplan öffnen</Button>
+		</Grid>
+		<Grid>
+			<Image Name="WarningImage" Source="../IMG/Warning.png" Width="32" Height="32" Margin="610,10,10,596" ToolTip="Es besteht keine Verbindung zum Dienst!" />
 		</Grid>
 	</Grid>
 </Window>

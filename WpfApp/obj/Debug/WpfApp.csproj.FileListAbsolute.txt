@@ -48,13 +48,11 @@ C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\bin\Debug\WpfApp.exe.
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\bin\Debug\WpfApp.exe
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\bin\Debug\WpfApp.pdb
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\bin\Debug\Newtonsoft.Json.dll
-C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\bin\Debug\SHA3.dll
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\bin\Debug\Newtonsoft.Json.xml
-C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\bin\Debug\SHA3.pdb
-C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\WpfApp.csprojAssemblyReference.cache
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\Views\MainWindow.baml
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\Views\MeetingPanel.baml
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\Views\Account Login.g.cs
+C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\Views\EatingPlan.g.cs
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\Views\InfoView.g.cs
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\Views\MainWindow.g.cs
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\Views\MeetingPanel.g.cs
@@ -62,6 +60,7 @@ C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\App.g.cs
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\WpfApp_MarkupCompile.cache
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\WpfApp_MarkupCompile.lref
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\Views\Account Login.baml
+C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\Views\EatingPlan.baml
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\Views\InfoView.baml
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\WpfApp.g.resources
 C:\Users\Marcel Schein\Documents\GitHub\Application\WpfApp\obj\Debug\WpfApp.Properties.Resources.resources
